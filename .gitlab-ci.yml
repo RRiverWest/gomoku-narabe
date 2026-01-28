@@ -1,0 +1,12 @@
+stages:
+  - deploy
+
+deploy_production:
+  stage: deploy
+  only:
+    - main
+  tags:
+    - self-hosted
+  script:
+    - cd PerformDocker
+    - docker compose up -d --build
