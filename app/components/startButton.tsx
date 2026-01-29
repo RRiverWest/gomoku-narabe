@@ -2,22 +2,22 @@ import { useBoardStore } from "@/store/boardStore";
 import { Button } from "./ui/button";
 
 const LeftGameStartButton = () => {
-	const { startGame } = useBoardStore()
+	const { setTurn, setPlaying } = useBoardStore()
 	return (
-		<Button variant="default" onClick={() => { startGame(1); }}>
+		<Button variant="default" onClick={() => { setTurn(1); setPlaying(true); }}>
 			左プレイヤーからスタート!
 		</Button>
 	)
 }
 const RightGameStartButton = () => {
-	const { startGame } = useBoardStore()
+	const { setTurn, setPlaying } = useBoardStore()
 	return (
-		<Button variant="default" onClick={() => { startGame(2); }}>
+		<Button variant="default" onClick={() => { setTurn(2); setPlaying(true); }}>
 			右プレイヤーからゲームスタート!
 		</Button>
 	)
 }
-export const GameStartButton = () => {
+export const StartButton = () => {
 	return (
 		<div>
 			<LeftGameStartButton />

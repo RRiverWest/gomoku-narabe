@@ -17,7 +17,7 @@ interface BoardStore {
 	turn: Turn;
 	playing: boolean;
 	lines: number[][];
-	roomId: number | null;
+	roomId: string | null;
 	mode: ("online" | "offline");
 	roomList: number[];
 
@@ -25,10 +25,9 @@ interface BoardStore {
 	pushStone: (stone: Stone) => void;
 	popStone: () => void;
 	setRole: (role: Role, playerNumber: (1 | 2 | null)) => void;
-	startGame: (playlerTurn: 1 | 2) => void;
 	setTurn: (turn: Turn) => void;
 	setLines: (linesData: number[][]) => void;
-	setRoomId: (id: number | null) => void;
+	setRoomId: (id: string | null) => void;
 	setMode: (mode: "online" | "offline") => void;
 	setPlaying: (p: boolean) => void;
 	setRoomList: (roomList: number[]) => void;
@@ -68,17 +67,13 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
 			playerNumber: playerNumber,
 		}));
 	},
-	startGame: (playlerTurn: 1 | 2) => set(() => ({
-		turn: playlerTurn,
-		playing: true,
-	})),
 	setTurn: (turn: Turn) => set(() => ({
 		turn: turn,
 	})),
 	setLines: (linesData) => set(() => ({
 		lines: linesData,
 	})),
-	setRoomId: (id: number | null) => set(() => ({
+	setRoomId: (id: string | null) => set(() => ({
 		roomId: id,
 	})),
 	setMode: (mode: "online" | "offline") => {

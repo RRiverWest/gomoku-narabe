@@ -2,10 +2,10 @@ import { useBoardStore } from "@/store/boardStore";
 import { Button } from "./ui/button";
 
 export const WaitButton = () => {
-	const { popStone: popStones, toggleTurn, setLines } = useBoardStore()
+	const { popStone: popStones, setTurn, setLines, turn } = useBoardStore()
 	return (
 		<Button variant="outline" onClick={() => {
-			toggleTurn();
+			setTurn(turn == 1 ? 2 : 1);
 			popStones();
 			setLines([]);
 		}}>

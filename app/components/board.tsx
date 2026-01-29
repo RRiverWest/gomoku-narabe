@@ -1,3 +1,4 @@
+"use client"
 import Konva from "konva"
 import { useRef, useState } from "react";
 
@@ -15,7 +16,7 @@ import useWindowResize from "@/hooks/use-windown-resize"
 export const linesQuantity = 15;
 
 export const Board = () => {
-	const { stones, pushStone: pushStones, turn, playing, toggleTurn, lines, setLines } = useBoardStore();
+	const { stones, pushStone: pushStones, turn, playing, setTurn, lines, setLines } = useBoardStore();
 	const { height } = useWindowResize();
 	const fieldSize = height * 0.7;
 	const linesArray: number[] = [];
@@ -87,7 +88,7 @@ export const Board = () => {
 		const cursorPosition = stageRef.current?.getPointerPosition();
 		if (!cursorPosition || pointerPosition.color == "red" || !playing) return;
 		pushStones({ x: pointerPosition.x, y: pointerPosition.y, color: turn == 1 ? "black" : "white" });
-		toggleTurn();
+		setTurn(turn == 1 ? 2 : 1);
 		setLines(checkLines().map(line => line.map(value => value * block + margin)));
 		console.log(lines);
 	};
