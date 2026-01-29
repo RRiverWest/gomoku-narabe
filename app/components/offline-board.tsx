@@ -15,8 +15,8 @@ import useWindowResize from "@/hooks/use-windown-resize"
 
 export const linesQuantity = 15;
 
-export const Board = () => {
-	const { stones, pushStone: pushStones, turn, playing, setTurn, lines, setLines } = useBoardStore();
+export default function OfflineBoard() {
+	const { stones, pushStone, turn, playing, setTurn, lines, setLines } = useBoardStore();
 	const { height } = useWindowResize();
 	const fieldSize = height * 0.7;
 	const linesArray: number[] = [];
@@ -87,7 +87,7 @@ export const Board = () => {
 
 		const cursorPosition = stageRef.current?.getPointerPosition();
 		if (!cursorPosition || pointerPosition.color == "red" || !playing) return;
-		pushStones({ x: pointerPosition.x, y: pointerPosition.y, color: turn == 1 ? "black" : "white" });
+		pushStone({ x: pointerPosition.x, y: pointerPosition.y, color: turn == 1 ? "black" : "white" });
 		setTurn(turn == 1 ? 2 : 1);
 		setLines(checkLines().map(line => line.map(value => value * block + margin)));
 		console.log(lines);

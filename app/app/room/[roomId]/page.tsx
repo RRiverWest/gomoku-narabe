@@ -2,13 +2,14 @@
 
 import { useEffect, use } from "react"
 import { getSocket } from "@/store/socket";
-import { StartButton } from "@/components/startButton";
-import { Board } from "@/components/board";
 import { useRoomSocketReceive } from "@/store/roomSocketReceive";
+import { useBoardStore } from "@/store/boardStore";
+import OnlineBoard from "@/components/online-board";
 
 export default function Gomoku({ params }: { params: Promise<{ roomId: string }> }) {
 	useRoomSocketReceive();
 
+	const { turn, playing } = useBoardStore();
 	const { roomId } = use(params);
 	const socket = getSocket();
 	useEffect(() => {
@@ -22,10 +23,10 @@ export default function Gomoku({ params }: { params: Promise<{ roomId: string }>
 	return (
 		<div>
 			<p>Room Id: {roomId} </p>
-			<StartButton />
-			<Board />
+			<p>status: {playing} </p>
+			<p>turn: {turn}</p>
+			<OnlineBoard />
 		</div>
 	);
 }
-
 

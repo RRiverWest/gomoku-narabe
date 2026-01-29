@@ -7,6 +7,7 @@ import type { Stone, Turn, Role } from "./boardStore"
 
 export const useRoomSocketReceive = () => {
 
+	const { setTurn, pushStone, setPlaying } = useBoardStore();
 	const socket = useBoardStore();
 	const Events = [
 		{
@@ -32,6 +33,20 @@ export const useRoomSocketReceive = () => {
 				socket.setTurn(turn);
 				socket.setLines(lines);
 				socket.setPlaying(playing);
+			}
+		},
+		{
+			name: "start-game",
+			handler: (turn: Turn) => {
+				setTurn(turn);
+				setPlaying(true);
+			}
+		},
+		{
+			name: "put",
+			handler: (stone: Stone, turn: Turn) => {
+				pushStone(stone);
+				setTurn(turn);
 			}
 		},
 		{

@@ -1,8 +1,9 @@
 import { useBoardStore } from "@/store/boardStore";
-import { linesQuantity } from "@/components/board";
+import { linesQuantity } from "@/components/offline-board";
+import type { Stone } from "@/store/boardStore";
 
-export const checkLines = (): number[][] => {
-	const { stones } = useBoardStore.getState();
+export const checkLines = (stones: Stone[]): number[][] => {
+	// const { stones } = useBoardStore.getState();
 	const latestStone = stones[stones.length - 1];
 	type Line = number[];
 	type Lines = Line[];
