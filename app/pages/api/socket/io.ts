@@ -88,13 +88,19 @@ export default function handler(
 					return;
 				}
 				if (room.players.get(socket.id) != room.turn) { return; }
+
 				room.stones.push(stone);
+				const lines = checkLines(room.stones);
+				if (lines.length) {
+					io.to(roomId).emit("finished-game", lines); 
+					console.log(`win pleyer: ${room.turn}`);
+					console.log(lines);
+				}
+
 				room.turn = room.turn == 1 ? 2 : 1;
 				io.to(roomId).emit("put", stone, room.turn);
-				// let lines = checkLines(room.stones);
 
 			});
-
 
 			socket.on("disconnect", () => {
 				console.log("client disconnected");

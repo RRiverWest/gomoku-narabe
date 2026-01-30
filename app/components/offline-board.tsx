@@ -16,7 +16,7 @@ import useWindowResize from "@/hooks/use-windown-resize"
 export const linesQuantity = 15;
 
 export default function OfflineBoard() {
-	const { stones, pushStone, turn, playing, setTurn, lines, setLines } = useBoardStore();
+	const { stones, pushStone, turn, playing, setTurn, linePoints: lines, setLinePoints: setLines } = useBoardStore();
 	const { height } = useWindowResize();
 	const fieldSize = height * 0.7;
 	const linesArray: number[] = [];

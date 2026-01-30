@@ -4,10 +4,11 @@ import { useEffect } from "react";
 import { getSocket } from "./socket";
 import { useBoardStore } from "@/store/boardStore";
 import type { Stone, Turn, Role } from "./boardStore"
+import { handler } from "next/dist/build/templates/app-page";
 
 export const useRoomSocketReceive = () => {
 
-	const { setTurn, pushStone, setPlaying } = useBoardStore();
+	const { setTurn, pushStone, setPlaying, setLinePoints: setLinePoints} = useBoardStore();
 	const socket = useBoardStore();
 	const Events = [
 		{
@@ -31,7 +32,7 @@ export const useRoomSocketReceive = () => {
 			handler: (stones: Stone[], turn: Turn, playing: boolean, lines: number[][]) => {
 				socket.setStones(stones);
 				socket.setTurn(turn);
-				socket.setLines(lines);
+				socket.setLinePoints(lines);
 				socket.setPlaying(playing);
 			}
 		},
@@ -47,6 +48,12 @@ export const useRoomSocketReceive = () => {
 			handler: (stone: Stone, turn: Turn) => {
 				pushStone(stone);
 				setTurn(turn);
+			}
+		},
+		{
+			name: "finished-game",
+			handler: (lines: number[][]) => {
+				setLinePoints(lines);
 			}
 		},
 		{

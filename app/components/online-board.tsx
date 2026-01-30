@@ -1,7 +1,7 @@
 "use client"
 
 import Konva from "konva"
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
 	Stage,
@@ -19,7 +19,7 @@ export const linesQuantity = 15;
 
 export default function OnlineBoard() {
 	const socket = getSocket();
-	const { stones, turn, playing, lines, playerNumber, roomId } = useBoardStore();
+	const { stones, turn, playing, linePoints: linePoints, playerNumber, roomId } = useBoardStore();
 	const { height } = useWindowResize();
 	const fieldSize = height * 0.7;
 	const linesArray: number[] = [];
@@ -27,6 +27,7 @@ export default function OnlineBoard() {
 	const stageSize = height * 0.8;
 	const block = fieldSize / (linesQuantity - 1);
 	const margin = height * 0.05;
+	const [lines, setLines] = useState<number[][]>([]);
 	const [pointerPosition, setPointerPosition] = useState<{ x: number, y: number, visible: boolean, color: "black" | "white" | "red" }>(
 		{ x: 0, y: 0, visible: false, color: "white" });
 
@@ -90,11 +91,15 @@ export default function OnlineBoard() {
 
 		const cursorPosition = stageRef.current?.getPointerPosition();
 		if (!cursorPosition || pointerPosition.color == "red" || !playing || playerNumber != turn) return;
-		socket.emit("put", { x: pointerPosition.x, y: pointerPosition.y, color: playerNumber == 1 ? "black" : "white" },roomId);
+		socket.emit("put", { x: pointerPosition.x, y: pointerPosition.y, color: playerNumber == 1 ? "black" : "white" }, roomId);
 		console.log("send put event");
 		// setLines(checkLines().map(line => line.map(value => value * block + margin)));
 		console.log(lines);
 	};
+
+	useEffect(() => {
+		setLines(linePoints.map(line => line.map(value => value * block + margin)));
+	},[linePoints]);
 
 	return (
 		<Stage
