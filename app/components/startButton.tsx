@@ -17,7 +17,7 @@ const RightGameStartButton = () => {
 		</Button>
 	)
 }
-export const StartButton = () => {
+const StartButton = () => {
 	return (
 		<div>
 			<LeftGameStartButton />
@@ -25,3 +25,4 @@ export const StartButton = () => {
 		</div>
 	)
 }
+export default StartButton;

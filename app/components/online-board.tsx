@@ -7,12 +7,14 @@ import {
 	Stage,
 	Layer,
 	Circle,
-	Line
+	Line,
+	Image
 } from "react-konva";
 import { useBoardStore } from "@/store/boardStore";
 import { checkLines } from "@/lib/check-lines";
 import useWindowResize from "@/hooks/use-windown-resize"
 import { getSocket } from "@/store/socket";
+import useImage from "use-image";
 
 
 export const linesQuantity = 15;
@@ -21,8 +23,9 @@ export default function OnlineBoard() {
 	const socket = getSocket();
 	const { stones, turn, playing, linePoints: linePoints, playerNumber, roomId } = useBoardStore();
 	const { height } = useWindowResize();
-	const fieldSize = height * 0.7;
 	const linesArray: number[] = [];
+	const [boardImage] = useImage("/woodgrain.png");
+	const fieldSize = height * 0.7;
 	const stageRef = useRef<Konva.Stage | null>(null);
 	const stageSize = height * 0.8;
 	const block = fieldSize / (linesQuantity - 1);
@@ -99,7 +102,7 @@ export default function OnlineBoard() {
 
 	useEffect(() => {
 		setLines(linePoints.map(line => line.map(value => value * block + margin)));
-	},[linePoints]);
+	}, [linePoints]);
 
 	return (
 		<Stage
@@ -111,6 +114,13 @@ export default function OnlineBoard() {
 			onMouseDown={handleMouseDown}
 		>
 			<Layer>
+				<Image
+					image={boardImage}
+					x={0}
+					y={0}
+					width={stageSize}
+					height={stageSize}
+				/>
 				<Line
 					points={[0, 0, stageSize, 0,
 						stageSize, 0, stageSize, stageSize,

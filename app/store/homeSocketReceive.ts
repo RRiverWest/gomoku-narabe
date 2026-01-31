@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { getSocket } from "./socket";
 import { useBoardStore } from "@/store/boardStore";
 import { useRouter } from "next/navigation";
-
+import type { RoomInfo } from "@/store/boardStore";
 
 export const useHomeSocketReceive = () => {
 
@@ -20,7 +20,7 @@ export const useHomeSocketReceive = () => {
 		},
 		{
 			name: "room-list",
-			handler: (roomList: number[]) => {
+			handler: (roomList: RoomInfo[]) => {
 				socket.setRoomList(roomList);
 			}
 		},
@@ -38,6 +38,7 @@ export const useHomeSocketReceive = () => {
 		Events.forEach(({ name, handler }) => {
 			socket.on(name, handler);
 		});
+		socket.emit("room-list");
 
 		return () => {
 			Events.forEach(({ name, handler }) => {

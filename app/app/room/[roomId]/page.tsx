@@ -13,10 +13,10 @@ export default function Gomoku({ params }: { params: Promise<{ roomId: string }>
 	const { roomId } = use(params);
 	const socket = getSocket();
 	useEffect(() => {
-		socket.emit("join-room", { roomId });
+		socket.emit("join-room", roomId);
 		console.log("send join-room request");
 		return () => {
-			socket.emit("leave-room", { roomId });
+			socket.emit("leave-room", roomId);
 		};
 	}, [roomId]);
 

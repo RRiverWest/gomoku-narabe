@@ -1,6 +1,6 @@
 "use client"
 import Konva from "konva"
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
 	Stage,
@@ -11,7 +11,6 @@ import {
 import { useBoardStore } from "@/store/boardStore";
 import { checkLines } from "@/lib/check-lines";
 import useWindowResize from "@/hooks/use-windown-resize"
-
 
 export const linesQuantity = 15;
 
@@ -24,8 +23,13 @@ export default function OfflineBoard() {
 	const stageSize = height * 0.8;
 	const block = fieldSize / (linesQuantity - 1);
 	const margin = height * 0.05;
-	const [pointerPosition, setPointerPosition] = useState<{ x: number, y: number, visible: boolean, color: "black" | "white" | "red" }>(
-		{ x: 0, y: 0, visible: false, color: "white" });
+	const [pointerPosition, setPointerPosition]
+		= useState<{ x: number, y: number, visible: boolean, color: "black" | "white" | "red" }>(
+			{ x: 0, y: 0, visible: false, color: "white" });
+
+	useEffect(() => {
+		setLines(checkLines(stones).map(line => line.map(value => value * block + margin)));
+	}, [stones])
 
 	// 横
 	for (let i = 0; i < linesQuantity; i++) {
@@ -89,7 +93,6 @@ export default function OfflineBoard() {
 		if (!cursorPosition || pointerPosition.color == "red" || !playing) return;
 		pushStone({ x: pointerPosition.x, y: pointerPosition.y, color: turn == 1 ? "black" : "white" });
 		setTurn(turn == 1 ? 2 : 1);
-		setLines(checkLines().map(line => line.map(value => value * block + margin)));
 		console.log(lines);
 	};
 

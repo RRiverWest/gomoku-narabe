@@ -7,6 +7,14 @@ export interface Stone {
 	y: number;
 	color: "white" | "black";
 }
+
+export interface RoomInfo {
+	id: string;
+	players: number; // 0,1,2
+	spectators: number;
+	playing: boolean;
+}
+
 export type Turn = (1 | 2) | null;
 export type Role = "player" | "spectactor" | null;
 
@@ -19,7 +27,7 @@ interface BoardStore {
 	linePoints: number[][];
 	roomId: string | null;
 	mode: ("online" | "offline");
-	roomList: number[];
+	roomList: RoomInfo[];
 
 	setStones: (newStones: Stone[]) => void;
 	pushStone: (stone: Stone) => void;
@@ -30,7 +38,7 @@ interface BoardStore {
 	setRoomId: (id: string | null) => void;
 	setMode: (mode: "online" | "offline") => void;
 	setPlaying: (p: boolean) => void;
-	setRoomList: (roomList: number[]) => void;
+	setRoomList: (roomList: RoomInfo[]) => void;
 
 	reset: () => void;
 }
@@ -84,7 +92,7 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
 	setPlaying: (p: boolean) => set(() => ({
 		playing: p,
 	})),
-	setRoomList: (roomList: number[]) => {
+	setRoomList: (roomList: RoomInfo[]) => {
 		set(() => ({
 			roomList: roomList,
 		}))

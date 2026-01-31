@@ -8,32 +8,33 @@ import { handler } from "next/dist/build/templates/app-page";
 
 export const useRoomSocketReceive = () => {
 
-	const { setTurn, pushStone, setPlaying, setLinePoints: setLinePoints} = useBoardStore();
+	const { setTurn, pushStone, setPlaying, setLinePoints, setStones, setRole, setRoomId } = useBoardStore();
 	const socket = useBoardStore();
 	const Events = [
 		{
 			name: "joined-room",
 			handler: (role: Role, playerNumber: 1 | 2 | null, roomId: string) => {
-				socket.setRoomId(roomId);
-				socket.setRole(role, playerNumber);
+				setRoomId(roomId);
+				setRole(role, playerNumber);
 				console.log("room joined: ", role, playerNumber, roomId);
 				console.log(socket.roomId, socket.role, socket.playerNumber);
+				setPlaying(false);
 			}
 		},
 		{
 			name: "update",
 			handler: (stone: Stone, turn: Turn) => {
-				socket.pushStone(stone);
-				socket.setTurn(turn);
+				pushStone(stone);
+				setTurn(turn);
 			}
 		},
 		{
 			name: "now-status",
 			handler: (stones: Stone[], turn: Turn, playing: boolean, lines: number[][]) => {
-				socket.setStones(stones);
-				socket.setTurn(turn);
-				socket.setLinePoints(lines);
-				socket.setPlaying(playing);
+				setStones(stones);
+				setTurn(turn);
+				setLinePoints(lines);
+				setPlaying(playing);
 			}
 		},
 		{
@@ -54,6 +55,12 @@ export const useRoomSocketReceive = () => {
 			name: "finished-game",
 			handler: (lines: number[][]) => {
 				setLinePoints(lines);
+			}
+		},
+		{
+			name: "game-aborted",
+			handler: (reason: string) => {
+				alert(reason);
 			}
 		},
 		{

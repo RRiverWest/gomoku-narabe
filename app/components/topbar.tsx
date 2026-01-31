@@ -8,18 +8,16 @@ export function Topbar() {
 		<header
 			className="
         relative
-        flex items-center
-				justify-between
 				py-3
         w-full
         px-3 sm:px-6
-        bg-[var(--topbar-bg)]
+        bg-popover
         text-[var(--topbar-text)]
         border-b
       "
 		>
 			{/* 左側 */}
-			<div className="flex place-items-center gap-3">
+			<div className="flex place-self-center gap-3">
 				<Button
 					variant="outline"
 					asChild
