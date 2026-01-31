@@ -8,7 +8,7 @@ import type { RoomInfo } from "@/store/boardStore";
 
 export const useHomeSocketReceive = () => {
 
-	const socket = useBoardStore();
+	const { setRoomList, roomList } = useBoardStore();
 	const router = useRouter();
 	const Events = [
 		{
@@ -20,8 +20,10 @@ export const useHomeSocketReceive = () => {
 		},
 		{
 			name: "room-list",
-			handler: (roomList: RoomInfo[]) => {
-				socket.setRoomList(roomList);
+			handler: (roomListData: RoomInfo[]) => {
+				setRoomList(roomListData);
+				console.log("update room list");
+				console.log(roomList)
 			}
 		},
 		{

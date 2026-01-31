@@ -5,29 +5,42 @@ import { useHomeSocketReceive } from "@/store/homeSocketReceive";
 import RoomList from "@/components/room-list";
 import { useBoardStore } from "@/store/boardStore";
 import Link from "next/link";
+import { PlusCircle } from "lucide-react";
+import { TbWorldOff } from "react-icons/tb";
 
 export default function Home() {
 	useHomeSocketReceive();
-	const handleClick = () => {
-		const socket = getSocket();
-		socket.emit("make-room");
-	};
+	const socket = getSocket();
 	const { roomList } = useBoardStore();
 
-
 	return (
+
 		<div>
-			<Button onClick={handleClick}>
-				make room
-			</Button>
+			<div className="w-full flex justify-center mt-10">
+				<div className="flex gap-6">
+					<Button
+						className="h-16 w-70 text-2xl font-semibold"
+						onClick={() => { socket.emit("make-room"); }}
+					>
+						<PlusCircle className="!h-10 !w-10" />
+						ルーム作成
+					</Button>
+					<Button
+						className="font-semibold h-16 w-70 border border-border"
+					>
+						<TbWorldOff className="!h-10 !w-10" />
+						<Link href="/offline" className="flex">
+							<p className="text-2xl">
+								オフライン対戦
+							</p>
+						</Link>
+					</Button>
+				</div>
+			</div>
 
-			<Button>
-				<Link href="/offline">
-					オフライン対戦
-				</Link>
-			</Button>
-
-			<RoomList rooms={roomList} />
+			<div className="mt-10 border border-border m-10 p-5 rounded-2xl">
+				<RoomList rooms={roomList} />
+			</div>
 		</div>
 	);
 }

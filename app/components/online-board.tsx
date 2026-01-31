@@ -120,6 +120,7 @@ export default function OnlineBoard() {
 					y={0}
 					width={stageSize}
 					height={stageSize}
+					opacity={0.6}
 				/>
 				<Line
 					points={[0, 0, stageSize, 0,

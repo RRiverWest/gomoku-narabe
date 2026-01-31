@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Users, Eye, Play } from "lucide-react";
+import Link from "next/link"
+import { useRouter } from "next/navigation";
 
 export interface RoomInfo {
 	id: string;
@@ -13,6 +15,7 @@ export interface RoomInfo {
 }
 
 export default function RoomList({ rooms }: { rooms: RoomInfo[] }) {
+	const router = useRouter();
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 			{rooms.map(room => (
@@ -41,10 +44,14 @@ export default function RoomList({ rooms }: { rooms: RoomInfo[] }) {
 						<div className="flex gap-2">
 							<Button
 								className="flex-1"
-								disabled={room.players >= 2 || room.playing}
-								onClick={() => console.log("clicked join-room : ", room.id)}
+								onClick={() => {
+									router.push(`/room/${room.id}`);
+									console.log("clicked join-room : ", room.id)
+								}
+								}
 							>
-								<Play className="mr-1 h-4 w-4" /> Join
+								<Play className="mr-1 h-4 w-4" />
+								join
 							</Button>
 						</div>
 					</CardContent>

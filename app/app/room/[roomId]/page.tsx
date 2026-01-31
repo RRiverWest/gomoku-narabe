@@ -21,11 +21,13 @@ export default function Gomoku({ params }: { params: Promise<{ roomId: string }>
 	}, [roomId]);
 
 	return (
-		<div>
-			<p>Room Id: {roomId} </p>
-			<p>status: {playing} </p>
-			<p>turn: {turn}</p>
-			<OnlineBoard />
+		<div className="w-full flex items-center justify-center">
+			<div className="object-center">
+				<h3 className="text-2xl">Room Id: {roomId} </h3>
+				<h3 className="text-2xl">You: {playing} </h3>
+				<h3 className="text-2xl">turn: {turn}</h3>
+				<OnlineBoard />
+			</div>
 		</div>
 	);
 }

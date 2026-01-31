@@ -3,6 +3,7 @@ import type { NextApiRequest } from "next";
 import type { NextApiResponseServerIO } from "@/types/next";
 import type { Stone } from "@/store/boardStore";
 import { checkLines } from "@/lib/check-lines";
+import type { RoomInfo } from "@/store/boardStore";
 
 let nextRoomId = 1;
 type PlayerNumber = 1 | 2;
@@ -13,6 +14,7 @@ interface RoomState {
 	stones: Stone[];
 	turn: PlayerNumber | null;
 }
+
 const rooms = new Map<string, RoomState>();
 
 export default function handler(
@@ -41,12 +43,12 @@ export default function handler(
 					turn: null
 				};
 				rooms.set(roomId, room);
-				// socket.emit("joind-room", "player", 1, "001");
+				broadcastRoomList(io);
 				socket.emit("made-room", roomId);
 				console.log(`made room from ${socket.id}, roomId: ${roomId}`);
 			});
 
-			socket.on("join-room", ( roomId: string ) => {
+			socket.on("join-room", (roomId: string) => {
 				let role: "player" | "spectator";
 				let playerNumber: 1 | 2 | null = null;
 				let room = rooms.get(roomId);
@@ -76,6 +78,7 @@ export default function handler(
 					io.to(roomId).emit("start-game", room.turn);
 					// ("start-game", turn:playerNumber);
 				}
+				broadcastRoomList(io);
 			});
 
 			// socket.on("put", ({ stone, roomId}: { stone: Stone, roomId: string }) => {
@@ -120,7 +123,21 @@ export default function handler(
 				if (room.spectators.has(socket.id)) {
 					room.spectators.delete(socket.id);
 				}
+				broadcastRoomList(io);
 			})
+
+			socket.on("room-list", () => {
+				console.log("get room-list req");
+				const roomList = Array.from(rooms.entries()).map(
+					([roomId, room]) => ({
+						id: roomId,
+						players: room.players.size,
+						spectators: room.spectators.size,
+						playing: room.playing,
+					})
+				);
+				socket.emit("room-list", roomList);
+			});
 
 			socket.on("disconnect", () => {
 				console.log("client disconnected: ", socket.id);
@@ -143,6 +160,7 @@ export default function handler(
 						break;
 					}
 				}
+				broadcastRoomList(io);
 			});
 
 		});
@@ -150,4 +168,17 @@ export default function handler(
 		res.socket.server.io = io;
 	}
 	res.end();
+}
+
+function broadcastRoomList(io: Server) {
+	const roomList = Array.from(rooms.entries()).map(
+		([id, room]) => ({
+			id,
+			players: room.players.size,
+			spectators: room.spectators.size,
+			playing: room.playing,
+		})
+	);
+	io.emit("room-list", roomList);
+	console.log("broadcast room list");
 }

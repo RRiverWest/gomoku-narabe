@@ -21,7 +21,7 @@ export default function ModeToggle() {
 				<Button
 					variant="secondary"
 					className="
-				rounded-full
+				rounded-xl
 				shadow-sm
 				relative
 				border border-accent 
