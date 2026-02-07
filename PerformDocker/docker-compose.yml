@@ -5,8 +5,6 @@ services:
       dockerfile: PerformDocker/AppDockerfile
     expose:
       - "3000"
-    volumes:
-      - ../app/:/home/node/app
     tty: true
     restart: always
 

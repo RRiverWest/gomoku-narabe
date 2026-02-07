@@ -1,7 +1,7 @@
 FROM node:24-alpine
 
 WORKDIR /home/node/app
-# COPY ../app/ .
+COPY ../app/ .
 
 USER root
 RUN chown -R node:node /home/node/
