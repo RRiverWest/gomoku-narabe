@@ -6,11 +6,13 @@ import {
 	Stage,
 	Layer,
 	Circle,
-	Line
+	Line,
+	Image
 } from "react-konva";
 import { useBoardStore } from "@/store/boardStore";
 import { checkLines } from "@/lib/check-lines";
 import useWindowResize from "@/hooks/use-windown-resize"
+import useImage from "use-image";
 
 export const linesQuantity = 15;
 
@@ -23,6 +25,7 @@ export default function OfflineBoard() {
 	const stageSize = height * 0.8;
 	const block = fieldSize / (linesQuantity - 1);
 	const margin = height * 0.05;
+	const [boardImage] = useImage("/woodgrain.png")
 	const [pointerPosition, setPointerPosition]
 		= useState<{ x: number, y: number, visible: boolean, color: "black" | "white" | "red" }>(
 			{ x: 0, y: 0, visible: false, color: "white" });
@@ -106,6 +109,14 @@ export default function OfflineBoard() {
 			onMouseDown={handleMouseDown}
 		>
 			<Layer>
+				<Image
+					image={boardImage}
+					x={0}
+					y={0}
+					width={stageSize}
+					height={stageSize}
+					opacity={0.6}
+				/>
 				<Line
 					points={[0, 0, stageSize, 0,
 						stageSize, 0, stageSize, stageSize,

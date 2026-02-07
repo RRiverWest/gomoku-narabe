@@ -1,8 +1,9 @@
 import { useBoardStore } from "@/store/boardStore";
 import { Button } from "./ui/button";
+import { Activity } from "react";
 
+const { setTurn, setStatus } = useBoardStore.getState();
 const LeftGameStartButton = () => {
-	const { setTurn, setStatus } = useBoardStore()
 	return (
 		<Button variant="default" onClick={() => { setTurn(1); setStatus("playing"); }}>
 			左プレイヤーからスタート!
@@ -10,7 +11,6 @@ const LeftGameStartButton = () => {
 	)
 }
 const RightGameStartButton = () => {
-	const { setTurn, setStatus } = useBoardStore()
 	return (
 		<Button variant="default" onClick={() => { setTurn(2); setStatus("playing"); }}>
 			右プレイヤーからゲームスタート!
@@ -19,7 +19,7 @@ const RightGameStartButton = () => {
 }
 const StartButton = () => {
 	return (
-		<div>
+		<div className="flex justify-evenly">
 			<LeftGameStartButton />
 			<RightGameStartButton />
 		</div>

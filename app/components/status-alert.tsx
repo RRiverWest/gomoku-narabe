@@ -20,7 +20,7 @@ interface Config {
 
 export const RoomStatusAlert = () => {
 	const { type } = useRoomStatusStore();
-	const { playerNumber } = useBoardStore();
+	const { playerNumber, turn } = useBoardStore();
 
 	const configMap = new Map<StatusType, Config>([
 
@@ -40,6 +40,16 @@ export const RoomStatusAlert = () => {
 			description: "思考中",
 			component: <FaCircle color={playerNumber == 1 ? "white" : "black"} />
 		}],
+		["leftTurn", {
+			title: "左プレイヤーのターン",
+			description: "石をおいてね",
+			component: <FaCircle color="white" />
+		}],
+		["rightTurn", {
+			title: "右プレイヤーのターン",
+			description: "石をおいてね",
+			component: <FaCircle color="black" />
+		}],
 		["player1Turn", {
 			title: "プレイヤー１のターン",
 			description: "思考中",
@@ -53,7 +63,7 @@ export const RoomStatusAlert = () => {
 		["finished", {
 			title: "ゲームは終了しました",
 			description: "ホームボタンを押してロビーへ",
-			component: <FaFlagCheckered  />
+			component: <FaFlagCheckered />
 		}],
 		["error", {
 			title: "エラー",
