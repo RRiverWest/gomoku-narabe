@@ -10,7 +10,7 @@ type PlayerNumber = 1 | 2;
 interface RoomState {
 	players: Map<string, PlayerNumber>;
 	spectators: Set<string>;
-	playing: boolean;
+	status: "waiting" | "playing" | "finished";
 	stones: Stone[];
 	turn: PlayerNumber | null;
 }
@@ -38,7 +38,7 @@ export default function handler(
 				const room: RoomState = {
 					players: new Map(),
 					spectators: new Set(),
-					playing: false,
+					status: "waiting",
 					stones: [],
 					turn: null
 				};
@@ -50,7 +50,7 @@ export default function handler(
 
 			socket.on("join-room", (roomId: string) => {
 				let role: "player" | "spectator";
-				let playerNumber: 1 | 2 | null = null;
+				let playerNumber: 1 | 2 | null;
 				let room = rooms.get(roomId);
 
 				if (!room) {
@@ -62,23 +62,29 @@ export default function handler(
 				if (room.players.has(socket.id) || room.spectators.has(socket.id)) { return; }
 
 				if (room.players.size < 2) {
-					playerNumber = room.players.size == 0 ? 1 : 2;
+					playerNumber = (!room.players.size) ? 1 : 2;
 					room.players.set(socket.id, playerNumber);
 					role = "player";
 				} else {
+					playerNumber = null;
 					room.spectators.add(socket.id);
 					role = "spectator";
 				}
 				socket.join(roomId);
 				socket.emit("joined-room", role, playerNumber, roomId);
-				console.log(`joined new client${socket.id} to roomId: ${roomId}`);
+				console.log(`joined new client${socket.id} to room: ${roomId}`);
+				broadcastRoomList(io);
 
 				if (playerNumber == 2) {
 					room.turn = 1;
-					io.to(roomId).emit("start-game", room.turn);
+					io.to(roomId).emit("start-game", 1);
+					room.status = "playing";
+					console.log(`start-game in :${roomId}`);
+					io.to(roomId).emit("now-status", room.stones, room.turn, room.status);
 					// ("start-game", turn:playerNumber);
 				}
-				broadcastRoomList(io);
+				socket.emit("now-status", room.stones, room.turn, room.status);
+				console.log("send now-status :", roomId);
 			});
 
 			// socket.on("put", ({ stone, roomId}: { stone: Stone, roomId: string }) => {
@@ -95,13 +101,14 @@ export default function handler(
 				room.stones.push(stone);
 				const lines = checkLines(room.stones);
 				if (lines.length) {
-					io.to(roomId).emit("finished-game", lines);
+					io.to(roomId).emit("finished-game", room.turn, lines);
+					rooms.delete(roomId);
 					console.log(`win pleyer: ${room.turn}`);
 					console.log(lines);
 				}
 
 				room.turn = room.turn == 1 ? 2 : 1;
-				io.to(roomId).emit("put", stone, room.turn);
+				io.to(roomId).emit("update", stone, room.turn);
 
 			});
 
@@ -115,8 +122,7 @@ export default function handler(
 				}
 				socket.leave(roomId);
 				if (room.players.has(socket.id)) {
-					io.to(roomId).emit("game-aborted",
-						`player ${room.players.get(socket.id) == 1 ? 2 : 1} が退出したためゲームが中断されました`);
+					io.to(roomId).emit("retire", room.players.get(socket.id));
 					rooms.delete(roomId);
 					console.log("deleted room", roomId);
 				}
@@ -133,7 +139,7 @@ export default function handler(
 						id: roomId,
 						players: room.players.size,
 						spectators: room.spectators.size,
-						playing: room.playing,
+						status: room.status,
 					})
 				);
 				socket.emit("room-list", roomList);
@@ -148,8 +154,7 @@ export default function handler(
 					) {
 						socket.leave(roomId);
 						if (room.players.has(socket.id)) {
-							io.to(roomId).emit("game-aborted",
-								`player ${room.players.get(socket.id) == 1 ? 2 : 1} が退出したためゲームが中断されました`);
+							io.to(roomId).emit("retire", room.players.get(socket.id));
 							rooms.delete(roomId);
 							console.log("deleted room :", roomId);
 						}
@@ -176,7 +181,7 @@ function broadcastRoomList(io: Server) {
 			id,
 			players: room.players.size,
 			spectators: room.spectators.size,
-			playing: room.playing,
+			status: room.status,
 		})
 	);
 	io.emit("room-list", roomList);

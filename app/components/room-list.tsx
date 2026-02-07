@@ -6,13 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Users, Eye, Play } from "lucide-react";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
+import type { RoomInfo } from "@/store/boardStore"
 
-export interface RoomInfo {
-	id: string;
-	players: number; // 0,1,2
-	spectators: number;
-	playing: boolean;
-}
 
 export default function RoomList({ rooms }: { rooms: RoomInfo[] }) {
 	const router = useRouter();
@@ -22,7 +17,7 @@ export default function RoomList({ rooms }: { rooms: RoomInfo[] }) {
 				<Card key={room.id} className="rounded-2xl shadow-sm">
 					<CardHeader className="flex flex-row items-center justify-between">
 						<CardTitle className="text-lg">Room #{room.id}</CardTitle>
-						{room.playing ? (
+						{room.staus == "playing" ? (
 							<Badge variant="destructive">Playing</Badge>
 						) : (
 							<Badge variant="secondary">Waiting</Badge>

@@ -21,7 +21,7 @@ export const linesQuantity = 15;
 
 export default function OnlineBoard() {
 	const socket = getSocket();
-	const { stones, turn, playing, linePoints: linePoints, playerNumber, roomId } = useBoardStore();
+	const { stones, turn, status, linePoints: linePoints, playerNumber, roomId } = useBoardStore();
 	const { height } = useWindowResize();
 	const linesArray: number[] = [];
 	const [boardImage] = useImage("/woodgrain.png");
@@ -67,7 +67,8 @@ export default function OnlineBoard() {
 		if (!cursorPosition) return;
 
 		if (margin > cursorPosition.x || cursorPosition.x > margin + fieldSize ||
-			margin > cursorPosition.y || cursorPosition.y > margin + fieldSize || playing == false) {
+			margin > cursorPosition.y || cursorPosition.y > margin + fieldSize || 
+				status  != "playing" || turn != playerNumber) {
 			// setPointerPosition({ x: 0, y: 0, visible: false, color: "green" })
 			setPointerPosition({ ...pointerPosition, visible: false })
 			return;
@@ -92,12 +93,13 @@ export default function OnlineBoard() {
 
 	const handleMouseDown = () => {
 
-		const cursorPosition = stageRef.current?.getPointerPosition();
-		if (!cursorPosition || pointerPosition.color == "red" || !playing || playerNumber != turn) return;
+		// const cursorPosition = stageRef.current?.getPointerPosition();
+		if (!pointerPosition.visible || pointerPosition.color == "red") return;
+
 		socket.emit("put", { x: pointerPosition.x, y: pointerPosition.y, color: playerNumber == 1 ? "black" : "white" }, roomId);
 		console.log("send put event");
 		// setLines(checkLines().map(line => line.map(value => value * block + margin)));
-		console.log(lines);
+		// console.log(lines);
 	};
 
 	useEffect(() => {

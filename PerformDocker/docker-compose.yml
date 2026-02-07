@@ -5,6 +5,8 @@ services:
       dockerfile: PerformDocker/AppDockerfile
     expose:
       - "3000"
+    volumes:
+      - ../app/:/home/node/app
     tty: true
     restart: always
 
@@ -14,10 +16,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
-      - "443:443"
-    volumes:
-      - /etc/nginx/certs:/etc/nginx/certs:ro
-
     depends_on:
       - app
     restart: always

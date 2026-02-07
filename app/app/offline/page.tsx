@@ -7,10 +7,10 @@ import StartButton from "@/components/startButton";
 
 export default function OfflinePage() {
 
-	const { setPlaying, setStones, setTurn, setLinePoints } = useBoardStore();
+	const { setStatus, setStones, setTurn, setLinePoints } = useBoardStore();
 	useEffect(() => {
 		return () => {
-			setPlaying(false);
+			setStatus("waiting");
 			setStones([]);
 			setTurn(null);
 			setLinePoints([]);

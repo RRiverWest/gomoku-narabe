@@ -8,11 +8,13 @@ export interface Stone {
 	color: "white" | "black";
 }
 
+export type Status = "waiting" | "playing" | "finished";
+
 export interface RoomInfo {
 	id: string;
 	players: number; // 0,1,2
 	spectators: number;
-	playing: boolean;
+	staus: Status;
 }
 
 export type Turn = (1 | 2) | null;
@@ -23,7 +25,7 @@ interface BoardStore {
 	role: Role,
 	playerNumber: (1 | 2 | null),
 	turn: Turn;
-	playing: boolean;
+	status: Status;
 	linePoints: number[][];
 	roomId: string | null;
 	mode: ("online" | "offline");
@@ -37,10 +39,8 @@ interface BoardStore {
 	setLinePoints: (linesData: number[][]) => void;
 	setRoomId: (id: string | null) => void;
 	setMode: (mode: "online" | "offline") => void;
-	setPlaying: (p: boolean) => void;
+	setStatus: (s: Status) => void;
 	setRoomList: (roomList: RoomInfo[]) => void;
-
-	reset: () => void;
 }
 
 export const useBoardStore = create<BoardStore>((set, get) => ({
@@ -48,7 +48,7 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
 	role: null,
 	playerNumber: null,
 	turn: null,
-	playing: false,
+	status: "waiting",
 	linePoints: [],
 	roomId: null,
 	mode: "offline",
@@ -69,10 +69,10 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
 			}));
 		}
 	},
-	setRole: (role: Role, playerNumber: (1 | 2 | null)) => {
+	setRole: (r: Role, pn: (1 | 2 | null)) => {
 		set(() => ({
-			role: role,
-			playerNumber: playerNumber,
+			role: r,
+			playerNumber: pn,
 		}));
 	},
 	setTurn: (turn: Turn) => set(() => ({
@@ -89,8 +89,8 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
 			mode: mode,
 		}));
 	},
-	setPlaying: (p: boolean) => set(() => ({
-		playing: p,
+	setStatus: (s: Status) => set(() => ({
+		status: s,
 	})),
 	setRoomList: (roomList: RoomInfo[]) => {
 		set(() => ({
@@ -98,16 +98,4 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
 		}))
 	},
 
-	reset: () => {
-		set(() => ({
-			stones: [],
-			linePoints: [],
-			roomId: null,
-			playing: false,
-			turn: null,
-			rule: null,
-			playerNumber: null,
-		})
-		)
-	}
 }));

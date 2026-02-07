@@ -15,7 +15,7 @@ import useWindowResize from "@/hooks/use-windown-resize"
 export const linesQuantity = 15;
 
 export default function OfflineBoard() {
-	const { stones, pushStone, turn, playing, setTurn, linePoints: lines, setLinePoints: setLines } = useBoardStore();
+	const { stones, pushStone, turn, status, setTurn, linePoints: lines, setLinePoints: setLines } = useBoardStore();
 	const { height } = useWindowResize();
 	const fieldSize = height * 0.7;
 	const linesArray: number[] = [];
@@ -64,7 +64,7 @@ export default function OfflineBoard() {
 		if (!cursorPosition) return;
 
 		if (margin > cursorPosition.x || cursorPosition.x > margin + fieldSize ||
-			margin > cursorPosition.y || cursorPosition.y > margin + fieldSize || playing == false) {
+			margin > cursorPosition.y || cursorPosition.y > margin + fieldSize || status != "playing") {
 			// setPointerPosition({ x: 0, y: 0, visible: false, color: "green" })
 			setPointerPosition({ ...pointerPosition, visible: false })
 			return;
@@ -90,7 +90,7 @@ export default function OfflineBoard() {
 	const handleMouseDown = () => {
 
 		const cursorPosition = stageRef.current?.getPointerPosition();
-		if (!cursorPosition || pointerPosition.color == "red" || !playing) return;
+		if (!cursorPosition || pointerPosition.color == "red" || status != "playing") return;
 		pushStone({ x: pointerPosition.x, y: pointerPosition.y, color: turn == 1 ? "black" : "white" });
 		setTurn(turn == 1 ? 2 : 1);
 		console.log(lines);

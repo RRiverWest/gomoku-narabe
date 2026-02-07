@@ -1,4 +1,3 @@
-import { useBoardStore } from "@/store/boardStore";
 import { linesQuantity } from "@/components/offline-board";
 import type { Stone } from "@/store/boardStore";
 
