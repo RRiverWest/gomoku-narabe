@@ -4,19 +4,18 @@ import { useEffect } from "react";
 import { getSocket } from "./socket";
 import { useBoardStore } from "@/store/boardStore";
 import type { Stone, Turn, Role, Status } from "./boardStore"
-import { handler } from "next/dist/build/templates/app-page";
 import { useGameAlertStore } from "./useGameAlertStore";
 import { useRoomStatusStore } from "./useRoomStatusStore";
 
 export const useRoomSocketReceive = () => {
 
 	const { setTurn, pushStone, setStatus,
-		setLinePoints, setStones, setRole, setRoomId} = useBoardStore();
+		setLinePoints, setStones, setRole, setRoomId } = useBoardStore();
 	const { changeStatusWait, changeStatusMyTurn,
 		changeStatusEnemyTurn, changeStatusFinished, changeStatusPlayer1Turn,
 		changeStatusPlayer2Turn, changeStatusError } = useRoomStatusStore();
-	const { showWinAlert, showRetireAlert } = useGameAlertStore();
-	// const socket = useBoardStore();
+	const { showWinAlert, showWon1Alert, showWon2Alert, showLoseAlert, showRetireEnemyAlert,
+		showRetire1Alert, showRetire2Alert } = useGameAlertStore();
 	const Events = [
 		{
 			name: "joined-room",
@@ -26,13 +25,6 @@ export const useRoomSocketReceive = () => {
 				console.log(`joined-room id:${roomId}, role:${r}, player number: ${pn} `);
 			}
 		},
-		// {
-		// 	name: "update",
-		// 	handler: (stone: Stone, turn: Turn) => {
-		// 		pushStone(stone);
-		// 		setTurn(turn);
-		// 	}
-		// },
 		{
 			name: "now-status",
 			handler: (stones: Stone[], turn: Turn, status: Status) => {
@@ -96,20 +88,52 @@ export const useRoomSocketReceive = () => {
 						changeStatusPlayer2Turn();
 						break;
 				}
-
 			}
 		},
 		{
-			name: "finished-game",
-			handler: (lines: number[][]) => {
+			name: "win",
+			handler: (t: Turn, lines: number[][]) => {
 				setLinePoints(lines);
 				setStatus("finished");
+				changeStatusFinished();
+				if (useBoardStore.getState().role == "player") {
+					if (useBoardStore.getState().playerNumber == t) {
+						showWinAlert();
+					} else {
+						showLoseAlert();
+					}
+				}else {
+					if (t == 1) {
+						showWon1Alert();
+					}else {
+						showWon2Alert();
+					}
+				}
 			}
 		},
 		{
 			name: "retire",
 			handler: (playerNumber: number) => {
-				showRetireAlert();
+				console.log(`retire player: ${playerNumber}`)
+				if (useBoardStore.getState().role === "player") {
+					showRetireEnemyAlert();
+				}
+				else {
+					if (playerNumber == 1) {
+						showRetire1Alert();
+						console.log("retire 1");
+					} else {
+						showRetire2Alert();
+						console.log("retire 2");
+					}
+				}
+			}
+		},
+		{
+			name: "finished",
+			handler: () => {
+				setStatus("finished");
+				changeStatusFinished();
 			}
 		},
 		{

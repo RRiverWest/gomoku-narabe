@@ -53,10 +53,9 @@ export const RoomStatusAlert = () => {
 		["finished", {
 			title: "ゲームは終了しました",
 			description: "ホームボタンを押してロビーへ",
-			component: <FaFlagCheckered color="white" />
+			component: <FaFlagCheckered  />
 		}],
 		["error", {
-
 			title: "エラー",
 			description: "ホームボタンを押してーロビーへ",
 			component: <MdOutlineErrorOutline color="red" />

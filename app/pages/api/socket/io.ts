@@ -99,16 +99,17 @@ export default function handler(
 				if (room.players.get(socket.id) != room.turn) { return; }
 
 				room.stones.push(stone);
+				room.turn = room.turn == 1 ? 2 : 1;
+				io.to(roomId).emit("update", stone, room.turn);
+
 				const lines = checkLines(room.stones);
 				if (lines.length) {
-					io.to(roomId).emit("finished-game", room.turn, lines);
+					io.to(roomId).emit("win", room.players.get(socket.id), lines);
 					rooms.delete(roomId);
 					console.log(`win pleyer: ${room.turn}`);
 					console.log(lines);
 				}
 
-				room.turn = room.turn == 1 ? 2 : 1;
-				io.to(roomId).emit("update", stone, room.turn);
 
 			});
 
@@ -123,6 +124,7 @@ export default function handler(
 				socket.leave(roomId);
 				if (room.players.has(socket.id)) {
 					io.to(roomId).emit("retire", room.players.get(socket.id));
+					io.to(roomId).emit("finished");
 					rooms.delete(roomId);
 					console.log("deleted room", roomId);
 				}
@@ -155,6 +157,7 @@ export default function handler(
 						socket.leave(roomId);
 						if (room.players.has(socket.id)) {
 							io.to(roomId).emit("retire", room.players.get(socket.id));
+							io.to(roomId).emit("finished");
 							rooms.delete(roomId);
 							console.log("deleted room :", roomId);
 						}

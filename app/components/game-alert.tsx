@@ -6,6 +6,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useGameAlertStore } from "@/store/useGameAlertStore";
+import { Description } from "@radix-ui/react-dialog";
 
 export function GameAlert() {
   const { open, type, closeAlert } = useGameAlertStore();
@@ -15,8 +16,16 @@ export function GameAlert() {
   const config = {
     win: {
       title: "You Win!",
-      description: "おめでとう！あなたの勝利です 🎉",
+      description: "おめでとう！あなたの勝利です!",
     },
+		won1: {
+			title: "Win Player 1",
+			description: "プレイヤー１が勝利しました"
+		},
+		won2: {
+			title: "Win Player 2",
+			description: "プレイヤー2 が勝利しました"
+		},
     lose: {
       title: "You Lose",
       description: "残念…次は勝とう",
@@ -25,10 +34,20 @@ export function GameAlert() {
       title: "Draw",
       description: "引き分けです",
     },
-		retire: {
-			title: "Retire",
+		retireEnemy: {
+			title: "Retire Enemy",
 			description: "相手がルームから退出しました"
 		},
+		retire1: {
+			title: "Retire Player 1",
+			description : "プレイヤー１が退出しました"
+
+		},
+		retire2: {
+			title: "Retire Player 2",
+			description : "プレイヤー２が退出しました"
+
+		}
   }[type];
 
   return (

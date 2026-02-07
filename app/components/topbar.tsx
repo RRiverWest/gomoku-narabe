@@ -18,8 +18,6 @@ export function Topbar() {
 			{/* 左側 */}
 			<div className="flex place-self-center gap-3">
 				<Button
-					variant="secondary"
-					className="bg-background hover:bg-accent"
 					asChild
 				>
 					<Link href="/">
