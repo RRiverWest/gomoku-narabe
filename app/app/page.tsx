@@ -25,16 +25,16 @@ export default function Home() {
 						<PlusCircle className="!h-10 !w-10" />
 						ルーム作成
 					</Button>
-					<Button
-						className="font-semibold h-16 w-70 border border-border"
-					>
-						<TbWorldOff className="!h-10 !w-10" />
-						<Link href="/offline" className="flex">
+					<Link href="/offline">
+						<Button
+							className="font-semibold h-16 w-70 border border-border"
+						>
+							<TbWorldOff className="!h-10 !w-10" />
 							<p className="text-2xl">
 								オフライン対戦
 							</p>
-						</Link>
-					</Button>
+						</Button>
+					</Link>
 				</div>
 			</div>
 
