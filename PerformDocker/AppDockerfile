@@ -9,7 +9,7 @@ RUN chown -R node:node /home/node/
 USER node
 ENV HOME=/home/node
 
-# RUN npm ci
-# RUN npm run build
+RUN npm ci
+RUN npm run build
 
 CMD ["npm", "start"]
