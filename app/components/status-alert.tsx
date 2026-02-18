@@ -73,34 +73,6 @@ export const RoomStatusAlert = () => {
 
 	]);
 
-	// {
-	// 	wait: {
-	// 		title: "待機中",
-	// 			description: "対戦相手を募集中",
-	// 		},
-	// 	myTurn: {
-	// 		title: "あなたのターン",
-	// 			description: "石をおいてね",
-	// 		},
-	// 	enemyTurn: {
-	// 		title: "相手のターン",
-	// 			description: "思考中",
-	// 		},
-	// 	player1Turn: {
-	// 		title: "プレイヤー１のターン",
-	// 			Description: "思考中",
-	// 		},
-	// 	player2Turn: {
-	// 		title: "プレイヤー２のターン",
-	// 			Description: "思考中",
-	// 		},
-	// 	finished: {
-	// 		title: "ゲームは終了しました",
-	// 			description: "ホームボタンを押してロビーへ"
-	// 	},
-	//
-	// };
-
 	const config = configMap.get(type);
 	if (!config) return null;
 
@@ -113,15 +85,4 @@ export const RoomStatusAlert = () => {
 			</AlertDescription>
 		</Alert>
 	);
-
-	// return (
-	// 	<Alert>
-	// 		<Spinner />
-	// 		<AlertTitle>Hello</AlertTitle>
-	// 		<AlertDescription>
-	// 		Test
-	// 		</AlertDescription>
-	// 	</Alert>
-	// );
-
 };
