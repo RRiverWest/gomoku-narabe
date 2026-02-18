@@ -5,6 +5,10 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Topbar } from "@/components/topbar";
 
+export const metadata: Metadata = {
+	title: "五目並べゲーム",
+}
+
 const geistSans = Geist({
 	variable: "--font-geist-sans",
 	subsets: ["latin"],
@@ -23,6 +27,9 @@ export default function RootLayout({
 
 	return (
 		<html lang="ja" suppressHydrationWarning>
+		<head>
+		<link rel="icon" href="/favicon.svg"/>
+		</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
