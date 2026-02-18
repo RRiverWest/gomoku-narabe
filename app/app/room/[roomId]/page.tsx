@@ -7,6 +7,12 @@ import { useBoardStore } from "@/store/boardStore";
 import OnlineBoard from "@/components/online-board";
 import { GameAlert } from "@/components/game-alert";
 import { RoomStatusAlert } from "@/components/status-alert";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "@/components/ui/alert"
 
 export default function Gomoku({ params }: { params: Promise<{ roomId: string }> }) {
 	useRoomSocketReceive();
@@ -26,7 +32,9 @@ export default function Gomoku({ params }: { params: Promise<{ roomId: string }>
 			<GameAlert />
 			<div className="object-center">
 				<RoomStatusAlert />
-				<h3 className="text-2xl">Room Id: {roomId} </h3>
+				<Alert>
+				<AlertTitle>Room Number: {roomId}</AlertTitle>
+				</Alert>
 				<OnlineBoard />
 			</div>
 		</div>
