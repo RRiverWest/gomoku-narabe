@@ -73,7 +73,6 @@ export default function handler(
 				socket.join(roomId);
 				socket.emit("joined-room", role, playerNumber, roomId);
 				console.log(`joined new client${socket.id} to room: ${roomId}`);
-				broadcastRoomList(io);
 
 				if (playerNumber == 2) {
 					room.turn = 1;
@@ -83,6 +82,7 @@ export default function handler(
 					io.to(roomId).emit("now-status", room.stones, room.turn, room.status);
 					// ("start-game", turn:playerNumber);
 				}
+				broadcastRoomList(io);
 				socket.emit("now-status", room.stones, room.turn, room.status);
 				console.log("send now-status :", roomId);
 			});

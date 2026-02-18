@@ -14,7 +14,7 @@ export interface RoomInfo {
 	id: string;
 	players: number; // 0,1,2
 	spectators: number;
-	staus: Status;
+	status: Status;
 }
 
 export type Turn = (1 | 2) | null;

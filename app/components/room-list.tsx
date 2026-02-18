@@ -17,7 +17,7 @@ export default function RoomList({ rooms }: { rooms: RoomInfo[] }) {
 				<Card key={room.id} className="rounded-2xl shadow-sm">
 					<CardHeader className="flex flex-row items-center justify-between">
 						<CardTitle className="text-lg">Room #{room.id}</CardTitle>
-						{room.staus == "playing" ? (
+						{room.status == "playing" ? (
 							<Badge variant="destructive">Playing</Badge>
 						) : (
 							<Badge variant="secondary">Waiting</Badge>

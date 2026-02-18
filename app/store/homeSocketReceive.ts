@@ -21,6 +21,7 @@ export const useHomeSocketReceive = () => {
 		{
 			name: "room-list",
 			handler: (roomListData: RoomInfo[]) => {
+				console.log(roomListData);
 				setRoomList(roomListData);
 				console.log("update room list");
 				console.log(roomList)
