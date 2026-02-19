@@ -29,7 +29,6 @@ export const RoomStatusAlert = () => {
 			description: "対戦相手を募集中",
 			component: <Spinner />
 		}],
-
 		["myTurn", {
 			title: "あなたのターン",
 			description: "石をおいてね",
@@ -43,12 +42,12 @@ export const RoomStatusAlert = () => {
 		["leftTurn", {
 			title: "左プレイヤーのターン",
 			description: "石をおいてね",
-			component: <FaCircle color="white" />
+			component: <FaCircle color="black" />
 		}],
 		["rightTurn", {
 			title: "右プレイヤーのターン",
 			description: "石をおいてね",
-			component: <FaCircle color="black" />
+			component: <FaCircle color="white" />
 		}],
 		["player1Turn", {
 			title: "プレイヤー１のターン",

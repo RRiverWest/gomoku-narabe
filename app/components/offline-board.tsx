@@ -1,6 +1,8 @@
 "use client"
 import Konva from "konva"
 import { useEffect, useRef, useState } from "react";
+import { useGameAlertStore } from "@/store/useGameAlertStore";
+import { useRoomStatusStore } from "@/store/useRoomStatusStore"
 
 import {
 	Stage,
@@ -19,6 +21,8 @@ export const linesQuantity = 15;
 export default function OfflineBoard() {
 	const { stones, pushStone, turn, status, setTurn, linePoints: lines, setLinePoints: setLines } = useBoardStore();
 	const { height } = useWindowResize();
+	const { showLeftSideWinAlert, showRightSideWinAlert } = useGameAlertStore();
+	const { changeStatusFinished, changeStatusLeftTurn, changeStatusRightTurn } = useRoomStatusStore();
 	const fieldSize = height * 0.7;
 	const linesArray: number[] = [];
 	const stageRef = useRef<Konva.Stage | null>(null);
@@ -31,7 +35,19 @@ export default function OfflineBoard() {
 			{ x: 0, y: 0, visible: false, color: "white" });
 
 	useEffect(() => {
-		setLines(checkLines(stones).map(line => line.map(value => value * block + margin)));
+		const lines = checkLines(stones);
+		if (lines.length) {
+			setLines(lines.map(line => line.map(value => value * block + margin)));
+			if (turn == 1) { showRightSideWinAlert() }
+			else { showLeftSideWinAlert() }
+			changeStatusFinished();
+		} else {
+			if (turn == 1) {
+				changeStatusLeftTurn();
+			} else {
+				changeStatusRightTurn();
+			}
+		}
 	}, [stones])
 
 	// 横

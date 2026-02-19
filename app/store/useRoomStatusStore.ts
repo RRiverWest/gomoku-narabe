@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
-export type StatusType = "wait"
+export type StatusType =
+	"wait"
 	| "myTurn"
 	| "enemyTurn"
 	| "player1Turn"
@@ -19,7 +20,7 @@ interface RoomStatusState {
 	changeStatusEnemyTurn: () => void;
 	changeStatusPlayer1Turn: () => void;
 	changeStatusPlayer2Turn: () => void;
-	changeStatusLeftTurn:() => void;
+	changeStatusLeftTurn: () => void;
 	changeStatusRightTurn: () => void;
 
 	changeStatusFinished: () => void;
@@ -35,8 +36,8 @@ export const useRoomStatusStore = create<RoomStatusState>((set) => ({
 	changeStatusEnemyTurn: () => set({ type: "enemyTurn" }),
 	changeStatusPlayer1Turn: () => set({ type: "player1Turn" }),
 	changeStatusPlayer2Turn: () => set({ type: "player2Turn" }),
-	changeStatusLeftTurn: () => set({type: "leftTurn"}),
-	changeStatusRightTurn: () => set({type: "rightTurn"}),
+	changeStatusLeftTurn: () => set({ type: "leftTurn" }),
+	changeStatusRightTurn: () => set({ type: "rightTurn" }),
 
 	changeStatusFinished: () => set({ type: "finished" }),
 	changeStatusError: () => set({ type: "error" }),
