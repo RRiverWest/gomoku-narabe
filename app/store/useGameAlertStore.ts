@@ -1,6 +1,17 @@
 import { create } from "zustand";
 
-export type GameAlertType = "retireEnemy" | "retire1" | "retire2" | "win" | "won1" | "won2" | "lose" | "draw" | null;
+export type GameAlertType =
+	"retireEnemy" |
+	"retire1" |
+	"retire2" |
+	"win" |
+	"won1" |
+	"won2" |
+	"lose" |
+	"draw" |
+	"leftSideWin" |
+	"rightSideWin" |
+	null;
 
 interface GameAlertState {
 	type: GameAlertType;
@@ -14,6 +25,8 @@ interface GameAlertState {
 	showWon2Alert: () => void;
 	showLoseAlert: () => void;
 	showDrawAlert: () => void;
+	showLeftSideWinAlert: () => void;
+	showRightSideWinAlert: () => void;
 	closeAlert: () => void;
 }
 
@@ -29,6 +42,8 @@ export const useGameAlertStore = create<GameAlertState>((set) => ({
 	showWon2Alert: () => set({ type: "won2", open: true }),
 	showLoseAlert: () => set({ type: "lose", open: true }),
 	showDrawAlert: () => set({ type: "draw", open: true }),
+	showLeftSideWinAlert: () => set({ type: "leftSideWin", open: true }),
+	showRightSideWinAlert: () => set({ type: "rightSideWin", open: true }),
 	closeAlert: () => set({ open: false, type: null }),
 }));
 
