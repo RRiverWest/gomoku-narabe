@@ -1,6 +1,5 @@
 import { useBoardStore } from "@/store/boardStore";
 import { Button } from "./ui/button";
-import { Activity } from "react";
 import { useRoomStatusStore } from "@/store/useRoomStatusStore"
 
 const { setTurn, setStatus } = useBoardStore.getState();

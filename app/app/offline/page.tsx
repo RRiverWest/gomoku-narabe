@@ -1,6 +1,6 @@
 "use client"
 
-import { Activity, useEffect } from "react"
+import { useEffect } from "react"
 import { useBoardStore } from "@/store/boardStore";
 import OfflineBoard from "@/components/offline-board"
 import StartButton from "@/components/startButton";
@@ -26,16 +26,18 @@ export default function OfflinePage() {
 		<div className="w-full flex items-center justify-center py-3">
 			<GameAlert />
 			<div className="object-center space-y-3">
-				<Activity mode={status == "playing" ? "hidden" : "visible"}>
+				{status !== "playing" && (
 					<StartButton />
-				</Activity>
-				<Activity mode={status != "playing" ? "hidden" : "visible"}>
-					<div className="flex justify-evenly">
-						<WaitButton />
-						<ResetButton />
-					</div>
-					<RoomStatusAlert />
-				</Activity>
+				)}
+				{status === "playing" && (
+					<>
+						<div className="flex justify-evenly">
+							<WaitButton />
+							<ResetButton />
+						</div>
+						<RoomStatusAlert />
+					</>
+				)}
 				<OfflineBoard />
 			</div>
 		</div>
