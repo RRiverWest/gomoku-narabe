@@ -15,9 +15,7 @@ import { checkLines } from "@/lib/check-lines";
 import useWindowResize from "@/hooks/use-windown-resize"
 import { getSocket } from "@/store/socket";
 import useImage from "use-image";
-
-
-export const linesQuantity = 15;
+import { linesQuantity } from "@/lib/constants";
 
 export default function OnlineBoard() {
 	const socket = getSocket();

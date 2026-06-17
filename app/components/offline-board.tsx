@@ -15,8 +15,7 @@ import { useBoardStore } from "@/store/boardStore";
 import { checkLines } from "@/lib/check-lines";
 import useWindowResize from "@/hooks/use-windown-resize"
 import useImage from "use-image";
-
-export const linesQuantity = 15;
+import { linesQuantity } from "@/lib/constants";
 
 export default function OfflineBoard() {
 	const { stones, pushStone, turn, status, setTurn, linePoints: lines, setLinePoints: setLines } = useBoardStore();

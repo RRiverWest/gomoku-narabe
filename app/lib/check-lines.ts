@@ -1,4 +1,4 @@
-import { linesQuantity } from "@/components/offline-board";
+import { linesQuantity } from "@/lib/constants";
 import type { Stone } from "@/store/boardStore";
 
 export const checkLines = (stones: Stone[]): number[][] => {
