@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Users, Eye, Play } from "lucide-react";
-import Link from "next/link"
 import { useRouter } from "next/navigation";
 import type { RoomInfo } from "@/store/boardStore"
 
